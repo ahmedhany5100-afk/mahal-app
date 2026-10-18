@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>حسابات المحل</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#0f766e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--pr:#0f766e;--g:#15803d;--r:#dc2626;--bg:#f4f7f6;--tx:#14211f;--mu:#6b7a77;--bd:#e1e8e6}
+*{box-sizing:border-box;font-family:system-ui,'Segoe UI',Tahoma,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--tx)}
+.w{max-width:600px;margin:auto;padding:14px 14px 100px}
+h1{font-size:21px;margin:4px 0 14px;color:var(--pr)}
+.card{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:12px}
+.lb{color:var(--mu);font-size:15px;font-weight:700}
+.big{font-size:42px;font-weight:800;margin-top:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.row2 .card{margin:0}.v{font-size:24px;font-weight:800;margin-top:2px}
+.s{color:var(--g)}.e{color:var(--r)}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+button{border:0;border-radius:16px;font-size:20px;font-weight:800;padding:18px;color:#fff;cursor:pointer}
+.bs{background:var(--g)}.be{background:var(--r)}
+.sm{background:#fff;color:var(--tx);border:1px solid var(--bd);font-size:15px;padding:12px;border-radius:12px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom,0)}
+nav button{flex:1;background:none;color:var(--mu);border-radius:0;font-size:15px;padding:14px 4px}
+nav button.on{color:var(--pr);border-top:3px solid var(--pr)}
+.it{display:flex;align-items:center;gap:10px;padding:13px 0;border-top:1px solid var(--bd)}
+.it:first-child{border-top:0}
+.it .n{flex:1;font-size:17px;font-weight:700}.it .n i{display:block;font-style:normal;font-size:13px;color:var(--mu);font-weight:600}
+.it .a{font-size:20px;font-weight:800}
+.x{background:none;color:var(--mu);font-size:22px;padding:6px 10px}
+.bars{display:flex;align-items:flex-end;gap:6px;height:130px;margin-top:10px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
+.bp{display:flex;align-items:flex-end;gap:2px;height:100%;width:100%;justify-content:center}
+.bp div{width:45%;border-radius:4px 4px 0 0;min-height:2px}
+.bc small{font-size:11px;color:var(--mu);margin-top:4px}
+#m{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;z-index:9}
+#m .sh{background:#fff;width:100%;max-width:600px;margin:auto;border-radius:22px 22px 0 0;padding:18px 16px 26px}
+input{width:100%;font-size:22px;padding:14px;border:2px solid var(--bd);border-radius:14px;margin:6px 0 12px}
+#ib{display:none;background:#fff7e0;border:1px solid #f1d98a;border-radius:14px;padding:12px;margin-bottom:12px;font-size:15px;font-weight:700}
+.emp{text-align:center;color:var(--mu);padding:26px 0}
+.v1{display:none}.v1.on{display:block}
+</style></head><body>
+<div class="w">
+<h1>🏪 حسابات المحل</h1>
+<div id="ib">📲 أضف التطبيق لشاشتك الرئيسية <button class="sm" id="ibb" style="margin-right:8px">تثبيت</button></div>
+
+<div class="v1 on" id="v-home">
+ <div class="card"><div class="lb">صافي ربح النهارده</div><div class="big" id="tp">0</div></div>
+ <div class="row2">
+  <div class="card"><div class="lb">مبيعات النهارده</div><div class="v s" id="ts">0</div></div>
+  <div class="card"><div class="lb">مصاريف النهارده</div><div class="v e" id="te">0</div></div>
+ </div>
+ <div class="card"><div class="lb">صافي ربح الشهر</div><div class="v" id="mp">0</div></div>
+ <div class="btns"><button class="bs" onclick="op('s')">＋ بيع</button><button class="be" onclick="op('e')">－ مصروف</button></div>
+</div>
+
+<div class="v1" id="v-list"><div class="card" id="lst"></div></div>
+
+<div class="v1" id="v-rep">
+ <div class="card"><div class="lb">تقرير الشهر</div>
+  <div class="it"><div class="n">المبيعات</div><div class="a s" id="rs">0</div></div>
+  <div class="it"><div class="n">المصاريف</div><div class="a e" id="re">0</div></div>
+  <div class="it"><div class="n">الصافي</div><div class="a" id="rp">0</div></div></div>
+ <div class="card"><div class="lb">آخر 7 أيام <span class="s">■ مبيعات</span> <span class="e">■ مصاريف</span></div><div class="bars" id="bars"></div></div>
+ <div class="card"><div class="lb">نسخة احتياطية</div><div class="row2" style="margin-top:10px">
+  <button class="sm" onclick="ex()">💾 حفظ نسخة</button>
+  <button class="sm" onclick="document.getElementById('fi').click()">📂 استرجاع</button></div>
+  <input type="file" id="fi" accept=".json" style="display:none"></div>
+</div>
+</div>
+
+<div id="m"><div class="sh">
+ <div class="lb" id="mt"></div>
+ <input id="ma" type="number" inputmode="decimal" placeholder="المبلغ">
+ <input id="mn" type="text" placeholder="ملاحظة (اختياري)">
+ <button id="ok" style="width:100%">حفظ</button>
+ <button class="sm" style="width:100%;margin-top:8px" onclick="cl()">إلغاء</button>
+</div></div>
+
+<nav><button class="on" data-v="home">الرئيسية</button><button data-v="list">السجل</button><button data-v="rep">التقرير</button></nav>
+
+<script>
+var K='mahal_v1',D=[],T='s';
+try{D=JSON.parse(localStorage.getItem(K)||'[]')}catch(x){D=[]}
+function sv(){try{localStorage.setItem(K,JSON.stringify(D))}catch(x){alert('تعذر الحفظ')}}
+function ds(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function f(n){return Number(n).toLocaleString('en-US')+' ج'}
+function sum(a,t){return a.filter(function(i){return i.t==t}).reduce(function(s,i){return s+i.a},0)}
+function $(i){return document.getElementById(i)}
+function pc(el,v){el.textContent=f(v);el.style.color=v<0?'#dc2626':''}
+function render(){
+ var td=ds(),mo=td.slice(0,7);
+ var a=D.filter(function(i){return i.d==td}),m=D.filter(function(i){return i.d.slice(0,7)==mo});
+ $('ts').textContent=f(sum(a,'s'));$('te').textContent=f(sum(a,'e'));
+ pc($('tp'),sum(a,'s')-sum(a,'e'));pc($('mp'),sum(m,'s')-sum(m,'e'));
+ $('rs').textContent=f(sum(m,'s'));$('re').textContent=f(sum(m,'e'));pc($('rp'),sum(m,'s')-sum(m,'e'));
+ var L=D.slice().sort(function(x,y){return y.ts-x.ts}),h='';
+ L.forEach(function(i){h+='<div class="it"><div class="n">'+(i.t=='s'?'بيع':'مصروف')+'<i></i></div><div class="a '+i.t+'">'+(i.t=='s'?'+':'-')+f(i.a)+'</div><button class="x" data-id="'+i.id+'">🗑</button></div>'});
+ $('lst').innerHTML=h||'<div class="emp">مفيش عمليات لسه</div>';
+ var ns=$('lst').querySelectorAll('.n i');
+ L.forEach(function(i,k){ns[k].textContent=i.d+(i.n?' • '+i.n:'')});
+ var days=[],mx=1,b='';
+ for(var k=6;k>=0;k--){var d=new Date();d.setDate(d.getDate()-k);var s=ds(d),x=D.filter(function(i){return i.d==s});
+  var o={l:s.slice(8),s:sum(x,'s'),e:sum(x,'e')};mx=Math.max(mx,o.s,o.e);days.push(o)}
+ days.forEach(function(o){b+='<div class="bc"><div class="bp"><div style="background:#15803d;height:'+o.s/mx*100+'%"></div><div style="background:#dc2626;height:'+o.e/mx*100+'%"></div></div><small>'+o.l+'</small></div>'});
+ $('bars').innerHTML=b;
+}
+function op(t){T=t;$('mt').textContent=t=='s'?'تسجيل بيع':'تسجيل مصروف';$('ok').className=t=='s'?'bs':'be';$('ma').value='';$('mn').value='';$('m').style.display='flex';setTimeout(function(){$('ma').focus()},100)}
+function cl(){$('m').style.display='none'}
+$('ok').onclick=function(){var a=parseFloat($('ma').value);if(!(a>0)){$('ma').focus();return}
+ D.push({id:Date.now()+''+Math.floor(Math.random()*1000),t:T,a:a,n:$('mn').value.trim(),d:ds(),ts:Date.now()});sv();cl();render()};
+$('lst').onclick=function(e){var id=e.target.getAttribute('data-id');if(id&&confirm('تحذف العملية دي؟')){D=D.filter(function(i){return i.id!=id});sv();render()}};
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){
+ document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+ document.querySelectorAll('.v1').forEach(function(x){x.classList.remove('on')});$('v-'+b.dataset.v).classList.add('on')}});
+function ex(){var u=URL.createObjectURL(new Blob([JSON.stringify(D)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='mahal-backup-'+ds()+'.json';a.click()}
+$('fi').onchange=function(e){var r=new FileReader();r.onload=function(){try{var x=JSON.parse(r.result);if(Array.isArray(x)&&confirm('هتستبدل البيانات الحالية. متأكد؟')){D=x;sv();render()}}catch(z){alert('الملف غير صالح')}};if(e.target.files[0])r.readAsText(e.target.files[0])};
+var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;$('ib').style.display='block'});
+$('ibb').onclick=function(){if(dp){dp.prompt();dp=null;$('ib').style.display='none'}};
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('service-worker.js')});
+render();
+</script></body></html>
