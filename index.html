@@ -11,7 +11,7 @@
 :root{--pr:#0f766e;--g:#15803d;--r:#dc2626;--bg:#f4f7f6;--tx:#14211f;--mu:#6b7a77;--bd:#e1e8e6}
 *{box-sizing:border-box;font-family:system-ui,'Segoe UI',Tahoma,Arial,sans-serif;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--tx)}
-.w{max-width:600px;margin:auto;padding:12px 14px 96px}
+.w{max-width:600px;margin:auto;padding:12px 14px 120px}
 .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 h1{font-size:20px;margin:0;color:var(--pr)}h2{margin:0 0 8px;font-size:20px}
 .card{background:#fff;border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:10px}
@@ -23,9 +23,10 @@ button{border:0;border-radius:14px;font-size:18px;font-weight:800;padding:15px;c
 .bs{background:var(--g)}.be{background:var(--r)}
 .sm{background:#fff;color:var(--tx);border:1px solid var(--bd);font-size:15px;padding:11px;border-radius:12px}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom,0)}
-nav button{flex:1;background:none;color:var(--mu);border-radius:0;font-size:13px;padding:12px 2px}
-nav button.on{color:var(--pr);border-top:3px solid var(--pr)}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bd);display:flex;gap:6px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 14px #0001}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:12px;line-height:1.3;padding:8px 2px 7px;border-radius:16px;color:#fff;background:linear-gradient(180deg,var(--c1),var(--c2));box-shadow:0 4px 0 var(--d),0 7px 8px #0002;opacity:.6;transition:transform .12s,box-shadow .12s,opacity .12s}
+nav button span{font-size:20px;line-height:1.2}
+nav button.on{opacity:1;transform:translateY(3px);box-shadow:0 1px 0 var(--d),0 3px 5px #0003,inset 0 2px 5px #fff5}
 .it{display:flex;align-items:center;gap:8px;padding:12px 0;border-top:1px solid var(--bd)}.it:first-child{border-top:0}
 .it .n{flex:1;font-size:16px;font-weight:700;min-width:0}.it .n i{display:block;font-style:normal;font-size:12px;color:var(--mu);font-weight:600}
 .it .a{font-size:18px;font-weight:800;white-space:nowrap}
@@ -56,7 +57,13 @@ input,select{width:100%;font-size:19px;padding:12px;border:2px solid var(--bd);b
 </div>
 <div id="m" data-a="bg"><div class="sh" id="mb"></div></div>
 <div id="lk"><div class="sh"><h2>🔒 أدخل كلمة السر</h2><input id="lp" type="tel" maxlength="4" inputmode="numeric" placeholder="----" style="text-align:center;font-size:28px"><button style="width:100%;margin-top:10px" data-a="unlock">فتح</button></div></div>
-<nav><button class="on" data-a="tab" data-id="home">الرئيسية</button><button data-a="tab" data-id="items">الأصناف</button><button data-a="tab" data-id="cust">الديون</button><button data-a="tab" data-id="hist">السجل</button><button data-a="tab" data-id="rep">التقرير</button></nav>
+<nav>
+<button class="on" data-a="tab" data-id="home" style="--c1:#2dd4bf;--c2:#0f766e;--d:#0a524c"><span>🏠</span>الرئيسية</button>
+<button data-a="tab" data-id="items" style="--c1:#60a5fa;--c2:#2563eb;--d:#1946a8"><span>📦</span>الأصناف</button>
+<button data-a="tab" data-id="cust" style="--c1:#fb923c;--c2:#dc2626;--d:#9b1c1c"><span>👥</span>الديون</button>
+<button data-a="tab" data-id="hist" style="--c1:#c084fc;--c2:#7e22ce;--d:#561891"><span>🧾</span>السجل</button>
+<button data-a="tab" data-id="rep" style="--c1:#4ade80;--c2:#15803d;--d:#0e5a2a"><span>📊</span>التقرير</button>
+</nav>
 <script>
 var K='mahal2',BK='mahal2_bk',S,PM='cash',HF='all',RP='m';
 function $(i){return document.getElementById(i)}
@@ -70,13 +77,16 @@ function num(id){var v=parseFloat($(id).value);return isNaN(v)?0:v}
 function def(){return{shop:'',type:'',pin:'',items:[],cust:[],tx:[],lastExp:0}}
 function parse(j){try{var x=JSON.parse(j);if(x&&Array.isArray(x.tx)){var d=def();for(var k in d)if(x[k]==null)x[k]=d[k];return x}}catch(e){}return null}
 function load(){var x=parse(localStorage.getItem(K));if(x)return x;try{var b=JSON.parse(localStorage.getItem(BK)||'[]');if(b.length){x=parse(b[0].s);if(x)return x}}catch(e){}return def()}
-function sv(){var j=JSON.stringify(S);try{localStorage.setItem(K,j)}catch(e){alert('تعذر الحفظ، مساحة الجهاز ممتلئة')}
+function sv(){var j=JSON.stringify(S);try{localStorage.setItem(K,j)}catch(e){AL('تعذر الحفظ، مساحة الجهاز ممتلئة')}
  try{var b=JSON.parse(localStorage.getItem(BK)||'[]'),t=ds();if(b.length&&b[0].d==t)b[0]={d:t,ts:Date.now(),s:j};else b.unshift({d:t,ts:Date.now(),s:j});localStorage.setItem(BK,JSON.stringify(b.slice(0,7)))}catch(e){}}
 function st(a){var s=0,c=0,e=0;a.forEach(function(t){if(t.k=='sale'){s+=t.a;c+=t.c||0}else if(t.k=='exp')e+=t.a});return{s:s,c:c,e:e,p:s-c-e}}
 function bal(id){var b=0;S.tx.forEach(function(t){if(t.cu==id){if(t.k=='sale'&&t.pm=='credit')b+=t.a;else if(t.k=='pay')b-=t.a}});return b}
 function debts(){var s=0;S.cust.forEach(function(c){var b=bal(c.id);if(b>0)s+=b});return s}
 function M(h){$('mb').innerHTML=h;$('m').style.display='flex'}
 function X(){$('m').style.display='none'}
+var CB=null,CB2=null;
+function CF(msg,yes,back){CB=yes;CB2=back;M('<h2 style="line-height:1.6">'+esc(msg)+'</h2><div class="row2" style="margin-top:14px"><button class="be" data-a="cfy">نعم</button><button class="sm" data-a="cfn">إلغاء</button></div>')}
+function AL(msg){M('<h2 style="line-height:1.6">'+esc(msg)+'</h2><button style="width:100%;margin-top:12px" data-a="cl">حسنًا</button>')}
 function wa(txt,ph){var p=(ph||'').replace(/\D/g,'');if(p[0]=='0')p='2'+p;window.open('https://wa.me/'+p+'?text='+encodeURIComponent(txt))}
 function pmn(p){return p=='cash'?'كاش':p=='wallet'?'محفظة':'آجل'}
 function isLow(i){return i.q!==''&&i.q!=null&&i.q<=3}
@@ -116,13 +126,13 @@ function repTxt(){var r=st(pr()),t=ds();return'📊 تقرير '+(RP=='d'?'ال�
 function pmSeg(){return'<div class="seg"><button data-a="pm" data-id="cash" class="'+(PM=='cash'?'on':'')+'">كاش</button><button data-a="pm" data-id="wallet" class="'+(PM=='wallet'?'on':'')+'">محفظة / إنستا</button><button data-a="pm" data-id="credit" class="'+(PM=='credit'?'on':'')+'">آجل</button></div>'}
 function opS(cid){PM=cid?'credit':'cash';var o='<option value="">بدون صنف (مبلغ مباشر)</option>'+S.items.map(function(i){return'<option value="'+i.id+'">'+esc(i.n)+(i.q===''||i.q==null?'':' ('+i.q+')')+'</option>'}).join('');
  var c='<option value="">— اختار العميل —</option>'+S.cust.map(function(x){return'<option value="'+x.id+'"'+(x.id==cid?' selected':'')+'>'+esc(x.n)+'</option>'}).join('')+'<option value="new">＋ عميل جديد</option>';
- M('<h2>تسجيل بيع</h2><label>الصنف</label><select id="si" onchange="calc()">'+o+'</select><label>الكمية</label><input id="sq" type="number" inputmode="decimal" value="1" oninput="calc()"><label>المبلغ الإجمالي</label><input id="sa" type="number" inputmode="decimal" placeholder="0"><label>طريقة الدفع</label><div id="pms">'+pmSeg()+'</div><div id="cw" style="display:'+(cid?'block':'none')+'"><label>العميل</label><select id="sc" onchange="cch()">'+c+'</select><div id="cn" style="display:none"><input id="cnn" placeholder="اسم العميل" style="margin-top:6px"><input id="cnp" type="tel" placeholder="رقم الموبايل (اختياري)" style="margin-top:6px"></div></div><label>ملاحظة (اختياري)</label><input id="sn"><button class="bs" style="width:100%;margin-top:12px" data-a="svS">حفظ البيع</button><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إلغاء</button>')}
-function calc(){var i=by($('si').value,S.items);if(i)$('sa').value=Math.round(i.s*(parseFloat($('sq').value)||0)*100)/100}
+ M('<h2>تسجيل بيع</h2><label>الصنف</label><select id="si" onchange="calc()">'+o+'</select><label>الكمية</label><input id="sq" type="number" inputmode="decimal" placeholder="1" oninput="calc()"><label>المبلغ الإجمالي</label><input id="sa" type="number" inputmode="decimal" placeholder="0"><label>طريقة الدفع</label><div id="pms">'+pmSeg()+'</div><div id="cw" style="display:'+(cid?'block':'none')+'"><label>العميل</label><select id="sc" onchange="cch()">'+c+'</select><div id="cn" style="display:none"><input id="cnn" placeholder="اسم العميل" style="margin-top:6px"><input id="cnp" type="tel" placeholder="رقم الموبايل (اختياري)" style="margin-top:6px"></div></div><label>ملاحظة (اختياري)</label><input id="sn"><button class="bs" style="width:100%;margin-top:12px" data-a="svS">حفظ البيع</button><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إلغاء</button>')}
+function calc(){var i=by($('si').value,S.items);if(i)$('sa').value=Math.round(i.s*(parseFloat($('sq').value)||1)*100)/100}
 function cch(){$('cn').style.display=$('sc').value=='new'?'block':'none'}
 function svS(){var a=num('sa'),q=num('sq')||1,i=by($('si').value,S.items);if(!(a>0)){$('sa').focus();return}
  var t={id:uid(),k:'sale',a:a,c:0,d:ds(),ts:Date.now(),pm:PM,n:$('sn').value.trim()};
- if(i){if(i.q!==''&&i.q!=null&&q>i.q&&!confirm('المخزون أقل من الكمية. تكمل؟'))return;t.i=i.id;t['in']=i.n;t.iq=q;t.c=(i.b||0)*q;if(i.q!==''&&i.q!=null)i.q=Math.max(0,i.q-q)}
- if(PM=='credit'){var cv=$('sc').value,cu;if(cv=='new'){var nm=$('cnn').value.trim();if(!nm){$('cnn').focus();return}cu={id:uid(),n:nm,ph:$('cnp').value.trim()};S.cust.push(cu)}else if(cv)cu=by(cv,S.cust);else{alert('اختار العميل');return}t.cu=cu.id}
+ if(i){t.i=i.id;t['in']=i.n;t.iq=q;t.c=(i.b||0)*q;if(i.q!==''&&i.q!=null)i.q=Math.max(0,i.q-q)}
+ if(PM=='credit'){var cv=$('sc').value,cu;if(cv=='new'){var nm=$('cnn').value.trim();if(!nm){$('cnn').focus();return}cu={id:uid(),n:nm,ph:$('cnp').value.trim()};S.cust.push(cu)}else if(cv)cu=by(cv,S.cust);else{$('sc').focus();return}t.cu=cu.id}
  S.tx.push(t);sv();X();render()}
 function opE(){M('<h2>تسجيل مصروف</h2><label>المبلغ</label><input id="ea" type="number" inputmode="decimal" placeholder="0"><label>النوع</label><select id="ec"><option>إيجار</option><option>رواتب</option><option>كهرباء ومياه</option><option>نقل وشحن</option><option>صيانة</option><option>أخرى</option></select><label>ملاحظة (اختياري)</label><input id="en"><button class="be" style="width:100%;margin-top:12px" data-a="svE">حفظ المصروف</button><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إلغاء</button>');setTimeout(function(){$('ea').focus()},80)}
 function opI(id){var i=by(id,S.items)||{n:'',b:'',s:'',q:''};
@@ -141,7 +151,7 @@ function opSet(){var b=[];try{b=JSON.parse(localStorage.getItem(BK)||'[]')}catch
  +'<div class="tt">النسخ الداخلية بتتمسح لو مسحت بيانات المتصفح أو غيرت الموبايل. ابعت نسخة على واتساب كل أسبوع واحتفظ بيها.</div><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إغلاق</button>')}
 function exp(){var fl=new File([JSON.stringify(S)],'backup-'+ds()+'.json',{type:'application/json'});S.lastExp=Date.now();sv();render();
  if(navigator.canShare&&navigator.canShare({files:[fl]}))navigator.share({files:[fl],title:'نسخة احتياطية'}).catch(function(){});else{var u=URL.createObjectURL(fl),a=document.createElement('a');a.href=u;a.download=fl.name;a.click()}}
-function impF(e){var r=new FileReader();r.onload=function(){var x=parse(r.result);if(x&&confirm('هتستبدل البيانات الحالية. متأكد؟')){S=x;sv();X();render()}else if(!x)alert('الملف غير صالح')};if(e.target.files[0])r.readAsText(e.target.files[0])}
+function impF(e){var r=new FileReader();r.onload=function(){var x=parse(r.result);if(x)CF('هتستبدل البيانات الحالية. متأكد؟',function(){S=x;sv();render()},function(){opSet()});else AL('الملف غير صالح')};if(e.target.files[0])r.readAsText(e.target.files[0])}
 var A={
  tab:function(v){document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.id==v)});document.querySelectorAll('.v1').forEach(function(x){x.classList.remove('on')});$('v-'+v).classList.add('on');window.scrollTo(0,0)},
  sale:opS,exp2:opE,item:opI,cu:opC,set:opSet,exp:exp,cl:X,
@@ -151,23 +161,27 @@ var A={
  svS:svS,
  svI:function(id){var n=$('in1').value.trim();if(!n){$('in1').focus();return}var q=$('in4').value,o={n:n,b:num('in2'),s:num('in3'),q:q===''?'':parseFloat(q)};
   if(id){var i=by(id,S.items);for(var k in o)i[k]=o[k]}else{o.id=uid();S.items.push(o)}sv();X();render()},
- dI:function(id){if(confirm('تحذف الصنف؟')){S.items=S.items.filter(function(i){return i.id!=id});sv();X();render()}},
+ dI:function(id){CF('تحذف الصنف؟',function(){S.items=S.items.filter(function(i){return i.id!=id});sv();render()},function(){opI(id)})},
  svC:function(){var n=$('c1').value.trim();if(!n){$('c1').focus();return}S.cust.push({id:uid(),n:n,ph:$('c2').value.trim()});sv();X();render()},
- pay:function(id){var a=num('pa');if(!(a>0)){$('pa').focus();return}if(a>bal(id)+0.001&&!confirm('المبلغ أكبر من المتبقي ('+f(bal(id))+'). تكمل؟'))return;S.tx.push({id:uid(),k:'pay',a:a,d:ds(),ts:Date.now(),cu:id,pm:'cash'});sv();render();opC(id)},
+ pay:function(id){var a=num('pa');if(!(a>0)){$('pa').focus();return}var go=function(){S.tx.push({id:uid(),k:'pay',a:a,d:ds(),ts:Date.now(),cu:id,pm:'cash'});sv();render();opC(id)};if(a>bal(id)+0.001)CF('المبلغ أكبر من المتبقي ('+f(bal(id))+'). تكمل؟',go,function(){A.payf(id)});else go()},
  rem:function(id){var c=by(id,S.cust);wa('أهلاً '+c.n+'، تذكير بسيط إن عليك مبلغ '+f(bal(id))+' لـ'+(S.shop||'المحل')+'. شكراً لتعاملك معانا 🌹',c.ph)},
  stm:function(id){var c=by(id,S.cust),h=S.tx.filter(function(t){return t.cu==id}).sort(function(x,y){return x.ts-y.ts}).slice(-10);
   wa('📄 كشف حساب '+c.n+' — '+(S.shop||'المحل')+'\n'+h.map(function(t){return t.d+'  '+(t.k=='pay'?'تسديد':'آجل')+' '+f(t.a)}).join('\n')+'\nالمتبقي: '+f(bal(id)),c.ph)},
  hf:function(v){HF=v;rl()},rp:function(v){RP=v;rr()},shr:function(){wa(repTxt())},
- del:function(id){var t=by(id,S.tx);if(t&&confirm('تحذف العملية دي؟')){if(t.k=='sale'&&t.i){var i=by(t.i,S.items);if(i&&i.q!==''&&i.q!=null)i.q+=t.iq||0}S.tx=S.tx.filter(function(x){return x.id!=id});sv();render()}},
+ del:function(id,after,msg){after=typeof after=='function'?after:null;var t=by(id,S.tx);if(!t)return;CF(msg||'تحذف العملية دي؟',function(){if(t.k=='sale'&&t.i){var i=by(t.i,S.items);if(i&&i.q!==''&&i.q!=null)i.q+=t.iq||0}S.tx=S.tx.filter(function(x){return x.id!=id});sv();render();if(after)after()},after)},
  svSet:function(){S.shop=$('s1').value.trim();S.pin=$('s2').value.replace(/\D/g,'').slice(0,4);sv();X();render()},
- rst:function(k){var b=JSON.parse(localStorage.getItem(BK)||'[]'),x=parse(b[k].s);if(x&&confirm('استرجاع نسخة '+b[k].d+'؟ البيانات الحالية هتتستبدل.')){S=x;sv();X();render()}},
+ rst:function(k){var b=JSON.parse(localStorage.getItem(BK)||'[]'),x=parse(b[k].s),d=b[k].d;if(x)CF('استرجاع نسخة '+d+'؟ البيانات الحالية هتتستبدل.',function(){S=x;sv();render()},function(){opSet()})},
  payf:function(id){var c=by(id,S.cust),b=bal(id);M('<h2>تسديد — '+esc(c.n)+'</h2><div class="lb">المتبقي '+f(b)+'</div><label>المبلغ</label><input id="pa" type="number" inputmode="decimal" value="'+(b>0?b:'')+'"><button class="bs" style="width:100%;margin-top:12px" data-a="pay" data-id="'+id+'">تأكيد التسديد</button><button class="sm" style="width:100%;margin-top:8px" data-a="cu" data-id="'+id+'">رجوع</button>');setTimeout(function(){$('pa').select()},80)},
- ed:function(id){var t=by(id,S.tx);if(!t)return;var v=prompt('المبلغ الجديد',t.a);if(v===null)return;v=parseFloat(v);if(!(v>0)){alert('مبلغ غير صحيح');return}t.a=v;sv();render();if(t.cu&&$('m').style.display=='flex')opC(t.cu)},
- del2:function(id){var t=by(id,S.tx),cu=t&&t.cu;A.del(id);if(cu&&!by(id,S.tx))opC(cu)},
- undo:function(){var t=S.tx[S.tx.length-1];if(t)A.del(t.id)},
+ ed:function(id){var t=by(id,S.tx);if(!t)return;M('<h2>تعديل المبلغ</h2><input id="ea2" type="number" inputmode="decimal" value="'+t.a+'"><button style="width:100%;margin-top:12px" data-a="sed" data-id="'+id+'">حفظ</button><button class="sm" style="width:100%;margin-top:8px" data-a="edb" data-id="'+id+'">إلغاء</button>')},
+ sed:function(id){var t=by(id,S.tx),v=num('ea2');if(!(v>0)){$('ea2').focus();return}t.a=v;sv();render();if(t.cu)opC(t.cu);else X()},
+ edb:function(id){var t=by(id,S.tx);if(t&&t.cu)opC(t.cu);else X()},
+ cfy:function(){var y=CB;CB=null;CB2=null;X();if(y)y()},
+ cfn:function(){var b=CB2;CB=null;CB2=null;X();if(b)b()},
+ del2:function(id){var t=by(id,S.tx),cu=t&&t.cu;A.del(id,cu?function(){opC(cu)}:null)},
+ undo:function(){var t=S.tx[S.tx.length-1];if(t)A.del(t.id,null,'تراجع عن آخر عملية؟')},
  ecu:function(id){var c=by(id,S.cust);M('<h2>تعديل العميل</h2><label>الاسم</label><input id="c1" value="'+esc(c.n)+'"><label>الموبايل</label><input id="c2" type="tel" value="'+esc(c.ph||'')+'"><button style="width:100%;margin-top:12px" data-a="svEc" data-id="'+id+'">حفظ</button><button class="sm" style="width:100%;margin-top:8px" data-a="cu" data-id="'+id+'">رجوع</button>')},
  svEc:function(id){var c=by(id,S.cust),n=$('c1').value.trim();if(!n){$('c1').focus();return}c.n=n;c.ph=$('c2').value.trim();sv();render();opC(id)},
- dcu:function(id){var c=by(id,S.cust),b=bal(id);if(confirm('تحذف '+c.n+(b>0?' وعليه '+f(b)+' (الدين هيتشال)':'')+'؟ المبيعات هتفضل في التقارير.')){S.tx.forEach(function(t){if(t.cu==id)delete t.cu});S.cust=S.cust.filter(function(x){return x.id!=id});sv();X();render()}},
+ dcu:function(id){var c=by(id,S.cust),b=bal(id);CF('تحذف '+c.n+(b>0?' وعليه '+f(b)+' (الدين هيتشال)':'')+'؟ المبيعات هتفضل في التقارير.',function(){S.tx.forEach(function(t){if(t.cu==id)delete t.cu});S.cust=S.cust.filter(function(x){return x.id!=id});sv();render()},function(){opC(id)})},
  imp:function(){$('fi').click()},
  unlock:function(){if($('lp').value==S.pin){$('lk').style.display='none';$('lp').value=''}else{$('lp').value='';$('lp').placeholder='غلط'}},
  ob:function(v){var n=$('o1').value.trim();if(!n){$('o1').focus();return}S.shop=n;S.type=v;sv();X();render()}
