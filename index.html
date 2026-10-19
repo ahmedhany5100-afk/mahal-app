@@ -146,19 +146,15 @@ function opC(id){var c=by(id,S.cust);if(!id){M('<h2>عميل جديد</h2><label
  +'<div class="row2" style="margin-top:8px"><button class="sm" data-a="ecu" data-id="'+id+'">✏️ تعديل العميل</button><button class="sm" style="color:#dc2626" data-a="dcu" data-id="'+id+'">🗑 حذف العميل</button></div><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إغلاق</button>')}
 function opSet(){var b=[];try{b=JSON.parse(localStorage.getItem(BK)||'[]')}catch(e){}
  M('<h2>الإعدادات</h2><label>اسم المحل</label><input id="s1" value="'+esc(S.shop)+'"><label>كلمة سر (4 أرقام) — اتركها فاضية لو مش عايز قفل</label><input id="s2" type="tel" maxlength="4" value="'+esc(S.pin)+'"><button style="width:100%;margin-top:10px" data-a="svSet">حفظ</button>'
- +'<label style="margin-top:14px">نسخ احتياطية تلقائية داخل التطبيق</label>'+(b.map(function(x,k){return'<div class="it"><div class="n">'+x.d+'</div><button class="sm" data-a="rst" data-id="'+k+'">استرجاع</button></div>'}).join('')||'<div class="lb">لسه مفيش</div>')
- +'<button class="bs" style="width:100%;margin-top:10px" data-a="bkw">📤 ابعت النسخة على واتساب</button><div class="row2" style="margin-top:8px"><button class="sm" data-a="bkc">📋 انسخ النسخة</button><button class="sm" data-a="bkp">📥 استرجاع (لصق)</button></div><div class="row2" style="margin-top:8px"><button class="sm" data-a="exp">💾 كملف</button><button class="sm" data-a="imp">📂 من ملف</button></div><input type="file" id="fi" accept=".json,.txt,text/plain,application/json" style="display:none" onchange="impF(event)">'
- +'<div class="tt">النسخ الداخلية بتتمسح لو مسحت بيانات المتصفح أو غيرت الموبايل. ابعت نسخة على واتساب كل أسبوع واحتفظ بيها.</div><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إغلاق</button>')}
-function bkt(){return'نسخة احتياطية - '+(S.shop||'المحل')+' - '+ds()+'\n\n'+JSON.stringify(S)}
-function exp(){var fl=new File([JSON.stringify(S)],'backup-'+ds()+'.txt',{type:'text/plain'});
- var done=function(){S.lastExp=Date.now();sv();render()};
- if(navigator.canShare&&navigator.canShare({files:[fl]})){navigator.share({files:[fl],title:'نسخة احتياطية'}).then(done).catch(function(){});return}
- try{var u=URL.createObjectURL(fl),a=document.createElement('a');a.href=u;a.download=fl.name;document.body.appendChild(a);a.click();a.remove();done();
-  M('<h2>تم حفظ النسخة ✅</h2><div class="lb" style="line-height:1.8">اتحفظت في تنزيلات الموبايل باسم:</div><input value="'+fl.name+'" readonly onclick="this.select()"><div class="tt">افتح التنزيلات وابعت الملف لنفسك على واتساب.</div><button style="width:100%;margin-top:12px" data-a="cl">حسنًا</button>')}catch(e){AL('تعذر إنشاء النسخة')}}
-function impF(e){var r=new FileReader();r.onload=function(){var x=parse(r.result);if(x)CF('هتستبدل البيانات الحالية. متأكد؟',function(){S=x;sv();render()},function(){opSet()});else AL('الملف غير صالح')};if(e.target.files[0])r.readAsText(e.target.files[0])}
+ +'<div class="card" style="margin-top:14px"><div class="lb">📤 احفظ نسخة من بياناتك</div><div class="tt">آخر نسخة بعتها: '+(S.lastExp?ds(new Date(S.lastExp)):'لسه ما بعتش')+'</div><button class="bs" style="width:100%;margin-top:8px" data-a="bkw">ابعت النسخة على واتساب</button><button class="sm" style="width:100%;margin-top:8px" data-a="bkc">📋 انسخ النسخة</button></div>'
+ +'<div class="card"><div class="lb">📥 استرجاع بياناتك</div><button class="sm" style="width:100%;margin-top:8px" data-a="bkp">استرجاع من رسالة النسخة (لصق)</button>'
+ +(b.length?'<div class="lb" style="margin-top:12px">نسخ تلقائية داخل التطبيق</div>'+b.map(function(x,k){return'<div class="it"><div class="n">'+x.d+'</div><button class="sm" data-a="rst" data-id="'+k+'">استرجاع</button></div>'}).join(''):'')+'</div>'
+ +'<div class="tt">النسخ التلقائية بتتمسح لو مسحت بيانات المتصفح أو غيرت الموبايل. ابعت نسخة على واتساب كل أسبوع.</div><button class="sm" style="width:100%;margin-top:8px" data-a="cl">إغلاق</button>')}
+function bkj(){var o=JSON.parse(JSON.stringify(S));o.pin='';return JSON.stringify(o)}
+function bkt(){var n=(S.shop||'المحل').replace(/[{}]/g,'');return'📦 نسخة احتياطية — '+n+'\n📅 '+ds()+'\n🏷 الأصناف: '+S.items.length+' | 👥 العملاء: '+S.cust.length+' | 🧾 العمليات: '+S.tx.length+'\n\n⚠️ دي نسخة من بيانات المحل. متعدّلش في الكود اللي تحت.\nللاسترجاع: انسخ الرسالة كلها ← افتح التطبيق ← ⚙ ← "استرجاع (لصق)".\n\n'+bkj()}
 var A={
  tab:function(v){document.querySelectorAll('nav button').forEach(function(b){b.classList.toggle('on',b.dataset.id==v)});document.querySelectorAll('.v1').forEach(function(x){x.classList.remove('on')});$('v-'+v).classList.add('on');window.scrollTo(0,0)},
- sale:opS,exp2:opE,item:opI,cu:opC,set:opSet,exp:exp,cl:X,
+ sale:opS,exp2:opE,item:opI,cu:opC,set:opSet,cl:X,
  bg:function(i,b,e){if(e.target.id=='m')X()},
  pm:function(v){PM=v;$('pms').innerHTML=pmSeg();$('cw').style.display=v=='credit'?'block':'none'},
  svE:function(){var a=num('ea');if(!(a>0)){$('ea').focus();return}S.tx.push({id:uid(),k:'exp',a:a,cat:$('ec').value,d:ds(),ts:Date.now(),n:$('en').value.trim()});sv();X();render()},
@@ -186,11 +182,10 @@ var A={
  ecu:function(id){var c=by(id,S.cust);M('<h2>تعديل العميل</h2><label>الاسم</label><input id="c1" value="'+esc(c.n)+'"><label>الموبايل</label><input id="c2" type="tel" value="'+esc(c.ph||'')+'"><button style="width:100%;margin-top:12px" data-a="svEc" data-id="'+id+'">حفظ</button><button class="sm" style="width:100%;margin-top:8px" data-a="cu" data-id="'+id+'">رجوع</button>')},
  svEc:function(id){var c=by(id,S.cust),n=$('c1').value.trim();if(!n){$('c1').focus();return}c.n=n;c.ph=$('c2').value.trim();sv();render();opC(id)},
  dcu:function(id){var c=by(id,S.cust),b=bal(id);CF('تحذف '+c.n+(b>0?' وعليه '+f(b)+' (الدين هيتشال)':'')+'؟ المبيعات هتفضل في التقارير.',function(){S.tx.forEach(function(t){if(t.cu==id)delete t.cu});S.cust=S.cust.filter(function(x){return x.id!=id});sv();render()},function(){opC(id)})},
- bkw:function(){var t=bkt();if(t.length>40000){AL('البيانات كبيرة على الرسالة. استخدم زر "كملف".');return}S.lastExp=Date.now();sv();render();wa(t)},
+ bkw:function(){var t=bkt();if(t.length>40000){AL('البيانات كبيرة على رسالة واتساب. استخدم زر "انسخ النسخة" واحفظها في الملاحظات.');return}S.lastExp=Date.now();sv();render();wa(t)},
  bkc:function(){var t=bkt();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){S.lastExp=Date.now();sv();render();AL('تم النسخ ✅ الصقه في واتساب أو الملاحظات واحتفظ بيه.')}).catch(function(){AL('تعذر النسخ')});else AL('المتصفح مش بيدعم النسخ')},
  bkp:function(){M('<h2>استرجاع من نسخة</h2><div class="tt">انسخ رسالة النسخة من واتساب والصقها هنا.</div><textarea id="bkt" rows="6" style="width:100%;font-size:15px;padding:10px;border:2px solid var(--bd);border-radius:12px;margin-top:8px"></textarea><button style="width:100%;margin-top:10px" data-a="bkr">استرجاع</button><button class="sm" style="width:100%;margin-top:8px" data-a="set">رجوع</button>')},
- bkr:function(){var v=$('bkt').value,i=v.indexOf('{'),x=i>-1?parse(v.slice(i,v.lastIndexOf('}')+1)):null;if(!x){AL('النص مش نسخة صحيحة');return}CF('هتستبدل البيانات الحالية. متأكد؟',function(){S=x;sv();render()},function(){opSet()})},
- imp:function(){$('fi').click()},
+ bkr:function(){var v=$('bkt').value,i=v.indexOf('{'),x=i>-1?parse(v.slice(i,v.lastIndexOf('}')+1)):null;if(!x){AL('النص مش نسخة صحيحة');return}CF('هتستبدل البيانات الحالية. متأكد؟',function(){x.pin=S.pin;S=x;sv();render()},function(){opSet()})},
  unlock:function(){if($('lp').value==S.pin){$('lk').style.display='none';$('lp').value=''}else{$('lp').value='';$('lp').placeholder='غلط'}},
  ob:function(v){var n=$('o1').value.trim();if(!n){$('o1').focus();return}S.shop=n;S.type=v;sv();X();render()}
 };
